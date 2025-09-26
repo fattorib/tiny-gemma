@@ -1,0 +1,9 @@
+*.safetensors
+*.model
+*.bin
+
+tmp/*
+build/*
+weights/*
+
+*.py[cod]
