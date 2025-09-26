@@ -51,7 +51,7 @@ def parse() -> CLIArgs:
 
     return CLIArgs(
         safetensors_path=args.safetensors_path,
-        weights_path=args.weights_path,
+        weights_path=args.save_weights_path,
         logits_path=args.logits_path,
         n_generation_steps=args.n_generation_steps,
     )

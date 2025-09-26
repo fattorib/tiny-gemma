@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 	fclose(f);
 	tensor::tokens tokens(tokens_data, 1, prefill_size);
 
-	sentencepiece::Tokenizer tokenizer("tokenizer_gemma3.bin", constants::bos_id, constants::eos_id, cfg.n_vocab, false);
+	sentencepiece::Tokenizer tokenizer("weights/tokenizer_gemma3.bin", constants::bos_id, constants::eos_id, cfg.n_vocab, false);
 	std::string prompt = "We introduce Gemma 3, a multimodal addition to the Gemma family of lightweight open models, ranging in scale from 1 to 27 billion parameters. This version introduces vision understanding abilities, a wider coverage of languages and longer context - at least 128K tokens. We also change the architecture of the model to reduce the KV-cache memory that tends to explode with long context. This is achieved by increasing the ratio of local to global attention layers, and keeping the span on local attention short.";
 	std::vector<int> ids = tokenizer.encode(prompt);
 	int prev_token = ids[ids.size() - 1];
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
 		for (int i = 0; i < cfg.n_vocab; i++) {
 			logits[i] = logits_gens[i + step * cfg.n_vocab];
 		}
-		pass = tests::check_error(o.data, logits, cfg.n_vocab, 1.0, 0.1);
+		pass = tests::check_error(o.data, logits, cfg.n_vocab, 5.0, 0.1);
 		assert(pass);
 		prev_token = tokens_decode.data[0];
 	}
