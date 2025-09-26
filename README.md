@@ -1,6 +1,6 @@
-# Gemma 3 CPU Inference
+# Tiny Gemma
 
-Single-threaded Gemma 3 CPU inference with no external dependencies, supporting the 270m and 1B models with int8 weight-only quantization [^1].
+Fast single-threaded Gemma 3 CPU inference with no external dependencies. Supports the 270m and 1B models with int8 weight-only quantization [^1].
 
 ## Requirements
 
@@ -20,7 +20,6 @@ pip install -r requirements.txt
 
 # download weights and tokenizer
 hf auth login 
-
 hf download google/gemma-3-270m-it tokenizer.model --local-dir weights
 hf download google/gemma-3-270m-it model.safetensors --local-dir weights
 
