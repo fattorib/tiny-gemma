@@ -24,7 +24,7 @@ hf download google/gemma-3-270m-it tokenizer.model --local-dir weights
 hf download google/gemma-3-270m-it model.safetensors --local-dir weights
 
 # convert weights and tokenizer
-python3 -m py.convert --weights-in-path 'model.safetensors' --weights-out-path 'gemma_i8.bin' --model-size '270m' --tok-in-path 'tokenizer.model' --tok-out-path 'tokenizer_gemma3.bin'
+python3 -m py.convert --weights-in-path 'weights/model.safetensors' --weights-out-path 'weights/gemma_i8.bin' --model-size '270m' --tok-in-path 'weights/tokenizer.model' --tok-out-path 'weights/tokenizer_gemma3.bin'
 
 # Generate text 
 make gemma && ./build/gemma --weights_path weights/gemma_i8.bin --model_size "270m" --n_dec 250 --minp 0.1 --temp 0.7  --prompt "What is a transformer?" --terminate_on_eos 1 --chat_format 1
@@ -42,12 +42,12 @@ Setting `--chat_format 1` ensures that the generation will terminate if an EOS t
 
 To run greedy decoding, just don't specify the `minp` argument:
 ```bash
-./build/gemma --weights_path gemma_i8_1B.bin --model_size "1B" --n_dec 250  --prompt "What is one difference between GPT2 and BERT?" --terminate_on_eos 1 --chat_format 1
+./build/gemma --weights_path weights/gemma_i8_1B.bin --model_size "1B" --n_dec 250  --prompt "What is one difference between GPT2 and BERT?" --terminate_on_eos 1 --chat_format 1
 ```
 
 ## Benchmarks
 
-Comparisons againt [`llama.cpp`](https://github.com/ggml-org/llama.cpp) (build 6442) [^2]. Benchmarks performed on 1024 token completions with 10 randomly sampled prompts from [`ultrachat200k`](https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k), the average prompt length was 178 tokens. 
+Comparisons against [`llama.cpp`](https://github.com/ggml-org/llama.cpp) (build 6442) [^2]. Benchmarks performed on 1024 token completions with 10 randomly sampled prompts from [`ultrachat200k`](https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k), the average prompt length was 178 tokens. 
 
 llama-cpp was run with the following settings:
 
@@ -85,7 +85,7 @@ There are unittests and integration tests to check for correctness against a num
 The unittest scripts are located under `tests/scripts/unittests`:
 - To build the C++ tests, run `make unittests`. 
 - To create all the reference data in Python and serialize it, run: `./tests/scripts/unittests/create_test_data.sh`. 
-- You can run run `./tests/scripts/unittests/run_tests.sh` to run the tests.
+- You can run `./tests/scripts/unittests/run_tests.sh` to run the tests.
 
 An integration test for end-to-end decoding is also provided under `tests/scripts/integrations`, it requires that you have downloaded the safetensor weights and tokenizer for `gemma-270m`. The integration test runs 255 steps of greedy decoding for the same prompt and compares the output tokens and logit distributions. To build the C++ tests, run `make integrations`. To create all the reference data in Python and serialize it, run: `./tests/scripts/integrations/create_test_weights_logits.sh`. Once the data is created, you can run run `./tests/scripts/integrations/run_test.sh` to run the test.
 

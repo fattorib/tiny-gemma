@@ -119,16 +119,16 @@ def main():
     args = parse()
     logger.info(f"Processing: {args}")
 
-    base_dir = 'weights'
+    base_dir = args.weights_out_path.split('/')[0]
     Path(base_dir).mkdir(parents=True, exist_ok=True)
 
-    _ = convert_weights(f"{base_dir}/{args.weights_in_path}", f"{base_dir}/{args.weights_out_path}", args.model_size)
+    _ = convert_weights(args.weights_in_path, args.weights_out_path, args.model_size)
 
-    convert_tokenizer(f"{base_dir}/{args.tok_in_path}", f"{base_dir}/{args.tok_out_path}")
+    convert_tokenizer(args.tok_in_path, args.tok_out_path)
 
     logger.info("Conversion complete")
 
 
 if __name__ == "__main__":
-    # python3 convert.py --weights-in-path 'model.safetensors' --weights-out-path 'gemma_i8_1B.bin' --model-size '1B' --tok-in-path 'tokenizer_gemma3.model' --tok-out-path 'tokenizer_gemma3.bin'
+    # python3 convert.py --weights-in-path 'weights/model.safetensors' --weights-out-path 'weights/gemma_i8_1B.bin' --model-size '1B' --tok-in-path 'weights/tokenizer.model' --tok-out-path 'weights/tokenizer_gemma3.bin'
     main()

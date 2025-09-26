@@ -56,15 +56,17 @@ std::tuple<std::string, std::string> create_passkey(int n_garbage){
 int main(int argc, char** argv) {
 	std::string weights_path;
 	std::string model_size;
+    std::string tokenizer_path = "weights/tokenizer_gemma3.bin";
     int n_garbage;
 
     int n_decode = 50;
 
 	ArgParser app(argv[0], "CLI Application for Gemma 3 Passkey retrieval.");
 
-	app.add_option("weights_path", weights_path, "Load path for cpp weights.");
+	app.add_option("weights_path", weights_path, "File path for model weights.");
 	app.add_option("model_size", model_size, "Model size to load.");
 	app.add_option("n_garbage", n_garbage, "Total number of garbage characters.");
+    app.add_option("tokenizer_path", tokenizer_path, "File path for tokenizer.");
 
 
 	try {
@@ -82,7 +84,7 @@ int main(int argc, char** argv) {
 	gemma::read_weights(&t, weights_path.c_str());
 	printf("Weights loaded!\n");
 
-	sentencepiece::Tokenizer tokenizer("weights/tokenizer_gemma3.bin", constants::bos_id, constants::eos_id, constants::vocab, true);
+	sentencepiece::Tokenizer tokenizer(tokenizer_path, constants::bos_id, constants::eos_id, constants::vocab, true);
 
     auto passkey_w_prompt = create_passkey(n_garbage);
 

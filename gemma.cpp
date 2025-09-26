@@ -8,6 +8,7 @@ int main(int argc, char** argv) {
 	std::string weights_path;
 	std::string model_size;
 	std::string prompt;
+	std::string tokenizer_path = "weights/tokenizer_gemma3.bin";
 	int n_decode;
 	float minp = 2.0;
 	float temp;
@@ -16,7 +17,7 @@ int main(int argc, char** argv) {
 
 	ArgParser app(argv[0], "CLI Application for Gemma 3 text generation.");
 
-	app.add_option("weights_path", weights_path, "Load path for cpp weights.");
+	app.add_option("weights_path", weights_path, "File path for model weights.");
 	app.add_option("model_size", model_size, "Model size to load.");
 	app.add_option("prompt", prompt, "The prompt.");
 	app.add_option("n_dec", n_decode, "Number of tokens to generate.");
@@ -24,6 +25,7 @@ int main(int argc, char** argv) {
 	app.add_option("temp", temp, "Sampler temperature.");
 	app.add_option("chat_format", chat_format, "Flag to enable using chat template.");
 	app.add_option("terminate_on_eos", terminate_on_eos, "Flag to enable early termination if model generates an EOS/EOT token.");
+	app.add_option("tokenizer_path", tokenizer_path, "File path for tokenizer.");
 
 	try {
 		int rc = app.parse(argc, argv);
@@ -40,7 +42,7 @@ int main(int argc, char** argv) {
 	gemma::read_weights(&t, weights_path.c_str());
 	printf("Weights loaded!\n");
 
-	sentencepiece::Tokenizer tokenizer("weights/tokenizer_gemma3.bin", constants::bos_id, constants::eos_id, constants::vocab, bool(chat_format));
+	sentencepiece::Tokenizer tokenizer(tokenizer_path, constants::bos_id, constants::eos_id, constants::vocab, bool(chat_format));
 
 	auto generations = gemma::generate(prompt, n_decode, &tokenizer, &t, minp, temp, bool(terminate_on_eos));
 
