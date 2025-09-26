@@ -59,14 +59,14 @@ llama-cpp was run with the following settings:
 | Engine    | Prefill (t/s) | Decode (t/s) |
 |-----------|-----------------|----------------|
 | llama.cpp | 126.133         | 19.21         |
-| **this repo**      | 94.28           | 58.78          |
+| **tiny-gemma**      | 94.28           | 58.78          |
 
 
 `google/gemma-3-1B`:
 | Engine    | Prefill (t/s) | Decode (t/s) |
 |-----------|-----------------|----------------|
 | llama.cpp | 29.37           | 7.53           |
-| **this repo**      | 19.87           | 16.45          |
+| **tiny-gemma**      | 19.87           | 16.45          |
 
 ## Passkey
 
@@ -102,6 +102,10 @@ This implementation prioritizes simplicity over features. Current limitations in
 - [`andrewkchan/yalm`](https://github.com/andrewkchan/yalm): A simple self-contained implementation of high-performance CPU/GPU inference which I used as a reference in some parts. 
 - [`llama2.c`](https://github.com/karpathy/llama2.c): Tokenizer implementation and inverse-transform sampling are based off of these implementations.
 - [Advanced Matrix Multiplication Optimization on Modern Multi-Core Processors](https://salykova.github.io/matmul-cpu): Original GEMM implementations were constructed following this post. 
+
+## License
+
+Apache 2.0
 
 [^1]: Technically there isn't anything in this codebase that prevents running the larger model, but do you really want to run a ≥4B param model on a single CPU core?
 [^2]: All benchmarks were performed on a Ryzen 5-5500 with 16GB of 3200 MT/s memory.
